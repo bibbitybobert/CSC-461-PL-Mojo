@@ -1,0 +1,12 @@
+'''def outputHistory(inout history: DynamicVector[DynamicVector[StringLiteral]]) -> None:
+    # takes in a list of boards, formats them, and outputs them to a file
+    with open("Game History.txt", 'w') as file:
+        file.write("Game History")
+        var index = 0
+        var n = history.size
+        for b in range(n):
+            var move = "Move #" + String(index) + ":"
+            file.write(move)
+            file.write(formatBoard(history[b]))
+            index += 1
+'''
