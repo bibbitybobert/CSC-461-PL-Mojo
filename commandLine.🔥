@@ -1,0 +1,38 @@
+#from piece import Piece
+from board import Board
+
+def main():
+    #print("hello world")
+    #for x in range(9, 0, -3):
+        #print(x)'''
+    
+    b = Board(7, 7, 4)
+    displayBoard(b)
+
+
+def formatBoard(inout board: Board) -> String:
+    # takes in a board, outputs a string displaying it
+    var b: String = "   C • O • N • N • E • C • T\n             four      \n\n  "
+    for c in range(board.__cols):
+        b += "(" + String(c+1) + ") "
+    b += "\n +---+---+---+---+---+---+---+\n"
+    let total: Int = board.__boardState.size
+    for i in range(total):
+            b = b + " | " + String(board.__boardState[i]) 
+            if (i+1) % board.__cols == 0:
+                b = b + " | " + "\n" + " +---+---+---+---+---+---+---+\n"
+    return b
+
+def displayBoard(inout board: Board) -> None:
+    # takes in a board, formats it, prints the board to the terminal
+    print(formatBoard(board))
+
+'''def outputHistory(history) -> None:
+    # takes in a list of boards, formats them, and outputs them to a file
+    with open("Game History.txt", w) as file:
+        file.write("Game History")
+        for index, board in ennumerate(history):
+            file.write(f"Move #{index}:")
+            file.write(formatBoard(board))
+'''
+
