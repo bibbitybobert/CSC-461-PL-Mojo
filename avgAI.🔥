@@ -1,0 +1,41 @@
+from board import Board
+
+struct max_ai:
+    var __future_sight: Int
+    var __id: int
+    fn __init__(inout self, forward_sight: Int, id: Int)
+        self.__future_sight = forward_sight
+
+    fn bestMove(intout self, b: Board) -> Int, Int:
+        var best_col: Int
+        return self.__id, findBest(b, 0)[1]
+
+    fn findBest(intout self, b: Board, depth: Int) -> Int, Int:
+        # returns score, col
+        '''
+        if depth == self.__future_sight:
+            break
+        
+        // play at each col
+        val tempBoards: array[Boards] = {Board} * b.col
+        for i in range(0, b.col):
+            tempBoards[i].play(self.__id, i)
+
+        // check for win
+        val win_arry: array[Bool] = false * b.__cols
+        for i in tempBoards:
+            win_arry = i.checkForWinner()
+
+        // if win in win_arry
+        //return score, col that won
+        //if no win 
+        val scoreArray: array[Int] = {0} * b.__cols
+        for i in tempBoards:
+            scoreArray
+        //get best score
+
+
+        '''
+
+
+    

@@ -1,0 +1,44 @@
+from board import Board
+
+def AI_v_AI(playBoard: Board) -> Board:
+    # Pseudocode time!!
+    print('What types of AI would you like to pit against each other??')
+    var ai1_type: String = input('AI player 1 (random, minmax, max):>')
+    var ai2_type: String = input('AI player 2 (random, minmax, max):>')
+
+
+    match ai1_type.toLower()[0:2]:
+        case 'ra':
+            ai1 = new randomAI(1)
+        case 'mi':
+            ai1 = new min_max_ai(1, 5)
+        case 'ma':
+            ai1 = new max_ai(1, 5)
+        case '_':
+            print('Unknown AI type for AI 1')
+
+    match ai2_type.toLower()[0:2]
+        case 'ra':
+            ai2 = new randomAI(2)
+        case 'mi':
+            ai2 = new min_max_ai(2, 5)
+        case 'ma':
+            ai2 = new max_ai(2, 5)
+        case _:
+            print('Unknown AI type for AI 2')
+    
+    while not playBoard.checkForWinner:
+        playBoard.playPiece(ai1.bestMove(playBoard))
+        playBoard.printBoard(playBoard.__rows, playBoard.__cols)
+        if playBoard.checkForWinner():
+            print('AI 1 WINS!!!!')
+            break
+        playBoard.playPiece(ai2.bestMove(playBoard))
+        playBoard.printBoard(playBoard.__rows, playBoard.__cols)
+        if playBoard.checkForWinner():
+            print('AI 2 WINS!!!!')
+            break
+
+    
+
+        
