@@ -1,0 +1,35 @@
+from board import Board
+from random import random_si64
+
+"""
+Author: Erin Green
+
+Description: This is the struct for the basic AI, which has a very simplicstic
+desicion-making algorithm, which is essentially random decisions.
+
+To use this AI, simply call the choice function and pass in the board. The AI will return
+an integer representing the column in which it wants to play.
+"""
+struct basic:
+   var player: Int
+
+   #so we know which pieces are ours
+   fn __init__(inout self, player: Int) -> None:
+      self.player = player
+
+   #returns the column in which it wants to place a piece
+   fn makeChoice(self, b: Board) -> Int64:
+      #for i in range(b.__cols):
+      #   var copy: Board = b
+      #   self.checkWin(copy.playPiece(self.player, i))
+      var choice = random_si64(0,b.__cols)
+
+      #else make a random choice and return
+      return choice
+      
+   
+   #calculate if spot will let you win
+   fn checkWin(self, b: Board, col: Int):
+    pass
+
+   
