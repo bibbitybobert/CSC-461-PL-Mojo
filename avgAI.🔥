@@ -1,41 +1,62 @@
 from board import Board
+from array import Array
 
 struct max_ai:
-    var __future_sight: Int
-    var __id: int
-    fn __init__(inout self, forward_sight: Int, id: Int)
-        self.__future_sight = forward_sight
+    var __id: Int
+    var __max_depth: Int
 
-    fn bestMove(intout self, b: Board) -> Int, Int:
-        var best_col: Int
-        return self.__id, findBest(b, 0)[1]
+    fn __init__(inout self, forward_sight: Int, id: Int):
+        self.__max_depth = forward_sight
 
-    fn findBest(intout self, b: Board, depth: Int) -> Int, Int:
-        # returns score, col
-        '''
-        if depth == self.__future_sight:
-            break
-        
-        // play at each col
-        val tempBoards: array[Boards] = {Board} * b.col
-        for i in range(0, b.col):
-            tempBoards[i].play(self.__id, i)
+    fn makeChoice(self, b: Board) -> Int:
+        return self.max_alg(b, 0, True).get[1, Int]()
 
-        // check for win
-        val win_arry: array[Bool] = false * b.__cols
-        for i in tempBoards:
-            win_arry = i.checkForWinner()
+    fn max_alg(self, b:Board, depth:Int, maxPlayer:Bool) -> (Int, Int):
+        # get all valid locations to play
+        var all_valid_cols: Array[Bool] = self.get_valid_cols(b)
+        # check if win possible
+        var win_col: Int = self.win_possible(b)
 
-        // if win in win_arry
-        //return score, col that won
-        //if no win 
-        val scoreArray: array[Int] = {0} * b.__cols
-        for i in tempBoards:
-            scoreArray
-        //get best score
+        if depth == self.__max_depth:
+        #   return score of current spot
+            return 0, self.current_score()
+        elif win_col != -1:
+            return win_col, 100
+        else:
+            return -1, 0
 
+        var value = 0
+        for i in range(all_valid_cols.size):
+            #   copy board and play peice at col
+            if all_valid_cols[i] == True:
+                var b_copy: Board = b
+                if maxPlayer:
+                    b_copy.playPiece(self.__id, i)
+                else:
+                    b_copy.playPiece(enemyId, i)
+                var new_score = self.max_alg(b_copy, depth + 1, maxPlayer ^ True).get[1, Int]()
+                if new_score > value:
+                    value = new_score
+                    col_choice = col
+        return col_choice, value
+        #   new_score = self.max_alg(bcopy_board, depth + 1, maxPlayer ^ True).get[1, Int]()
+        #   if new_score > value:
+        #       value = new_score
+        #       col_choice = col
+        #return col_choice, value
 
-        '''
+    fn get_valid_cols(self, b: Board) -> Array[Bool]:
+        var valid_col_arry: Array[Bool] = Array[Bool](b.__cols, False)
+        for i in range(b.__cols):
+            if b.__piecesInColumns[i] != b.__rows:
+                valid_col_arry[i] = True
 
+    fn win_possible(self, b:Board) -> Int:
+        for i in range(b.__cols):
+            var copy:Board = b # need keiran to implement board copy functionality
+            copy.playPiece(self.__id, i)
+            if copy.checkForWinner():
+                return i
+        return -1
 
-    
+    fn current_score(self) -> Int:

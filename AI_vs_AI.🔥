@@ -1,39 +1,42 @@
 from board import Board
+from python import Python
+import basicAI.🔥
+import avgAI.🔥
 
 def AI_v_AI(playBoard: Board) -> Board:
     # Pseudocode time!!
     print('What types of AI would you like to pit against each other??')
-    var ai1_type: String = input('AI player 1 (random, minmax, max):>')
-    var ai2_type: String = input('AI player 2 (random, minmax, max):>')
+    let py = Python.import_module("bultins")
+    var ai1_type: String = Python.evaluate("input('AI player 1 (random, minmax, max):>').toLower()").to_string()
+    var ai2_type: String = Python.evaluate("input('AI player 2 (random, minmax, max):>').toLower()").to_string()
 
+    ai1_type = ai1_type[0:2]
+    if ai1_type == 'ra':
+        ai1 = randomAI(1)
+    elif ai1_type == 'mi':
+        ai1 = new min_max_ai(1, 5)
+    elif ai1_type == 'ma':
+        ai1 = new max_ai(1, 5)
+    else:
+        print('Unknown AI type for AI 1')
 
-    match ai1_type.toLower()[0:2]:
-        case 'ra':
-            ai1 = new randomAI(1)
-        case 'mi':
-            ai1 = new min_max_ai(1, 5)
-        case 'ma':
-            ai1 = new max_ai(1, 5)
-        case '_':
-            print('Unknown AI type for AI 1')
-
-    match ai2_type.toLower()[0:2]
-        case 'ra':
-            ai2 = new randomAI(2)
-        case 'mi':
-            ai2 = new min_max_ai(2, 5)
-        case 'ma':
-            ai2 = new max_ai(2, 5)
-        case _:
-            print('Unknown AI type for AI 2')
+    ai2_type = ai2_type.toLower()[0:2]
+    if ai2_type == 'ra':
+        ai2 = new randomAI(1)
+    elif ai2_type == 'mi':
+        ai2 = new min_max_ai(1, 5)
+    elif ai2_type == 'ma':
+        ai2 = new max_ai(1, 5)
+    else:
+        print('Unknown AI type for AI 2')
     
     while not playBoard.checkForWinner:
-        playBoard.playPiece(ai1.bestMove(playBoard))
+        playBoard.playPiece(1, ai1.makeChoice(playBoard))
         playBoard.printBoard(playBoard.__rows, playBoard.__cols)
         if playBoard.checkForWinner():
             print('AI 1 WINS!!!!')
             break
-        playBoard.playPiece(ai2.bestMove(playBoard))
+        playBoard.playPiece(2, ai2.makeeChoice(playBoard))
         playBoard.printBoard(playBoard.__rows, playBoard.__cols)
         if playBoard.checkForWinner():
             print('AI 2 WINS!!!!')
