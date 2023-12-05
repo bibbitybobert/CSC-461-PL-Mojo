@@ -30,7 +30,6 @@ struct Board:
 
 
     fn __copyinit__(inout self, other: Self):
-        print("in copy")
         self.__rows = other.__rows
         self.__cols = other.__cols
         self.__playerOneID = other.__playerOneID
@@ -38,7 +37,6 @@ struct Board:
         self.__numberToWin = other.__numberToWin
         self.__lastPlayedRow = other.__lastPlayedRow
         self.__lastPlayedCol = other.__lastPlayedCol
-        print("through first half of copy")
 
         # Create new Array objects and copy the values from other
         self.__boardState = Array[Int](self.__rows * self.__cols, -1)
@@ -50,8 +48,6 @@ struct Board:
         for i in range(self.__cols):
             self.__piecesInColumns[i] = other.__piecesInColumns[i]
 
-        print("copied boardstate")
-        print("copied pieces")
 
 
     fn playPiece(inout self, piece: Int, column: Int) -> Bool:
@@ -99,7 +95,6 @@ struct Board:
                 col += run
                 row += rise
 
-        print(String(count))
 
         return count >= self.__numberToWin
 
