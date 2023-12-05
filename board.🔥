@@ -5,13 +5,15 @@ from python import Python
 struct Board:
     var __rows: Int
     var __cols: Int
+    var __playerOneID: Int
+    var __playerTwoID: Int
     var __numberToWin: Int
     var __lastPlayedRow: Int
     var __lastPlayedCol: Int
     var __boardState: Array[Int]
     var __piecesInColumns: Array[Int]
 
-    fn __init__(inout self, rows: Int, cols: Int, numToWin: Int) -> None:
+    fn __init__(inout self, rows: Int, cols: Int, numToWin: Int, playerOneID: Int, playerTwoID: Int) -> None:
         # user can decide board size and number to win
         self.__rows = rows
         self.__cols = cols
@@ -20,9 +22,37 @@ struct Board:
         self.__lastPlayedCol = -1
         self.__boardState = Array[Int](rows*cols, -1)  # create an Array filled with -1s
         self.__piecesInColumns = Array[Int](cols, 0)
+        self.__playerOneID = playerOneID
+        self.__playerTwoID = playerTwoID
 
         for i in range(cols):
             self.__piecesInColumns[i] = 0
+
+
+    fn __copyinit__(inout self, other: Self):
+        print("in copy")
+        self.__rows = other.__rows
+        self.__cols = other.__cols
+        self.__playerOneID = other.__playerOneID
+        self.__playerTwoID = other.__playerTwoID
+        self.__numberToWin = other.__numberToWin
+        self.__lastPlayedRow = other.__lastPlayedRow
+        self.__lastPlayedCol = other.__lastPlayedCol
+        print("through first half of copy")
+
+        # Create new Array objects and copy the values from other
+        self.__boardState = Array[Int](self.__rows * self.__cols, -1)
+        self.__piecesInColumns = Array[Int](self.__cols, 0)
+
+        for i in range(self.__rows * self.__cols):
+            self.__boardState[i] = other.__boardState[i]
+
+        for i in range(self.__cols):
+            self.__piecesInColumns[i] = other.__piecesInColumns[i]
+
+        print("copied boardstate")
+        print("copied pieces")
+
 
     fn playPiece(inout self, piece: Int, column: Int) -> Bool:
         if column < 0 or column >= self.__cols:
@@ -103,3 +133,8 @@ struct Board:
                 let index = i * c + j
                 output = output + String(self.__boardState[index])
             print(output)
+        print(self.__cols)
+        print(self.__rows)
+        print(self.__numberToWin)
+        print(self.__playerOneID)
+        print(self.__playerTwoID)

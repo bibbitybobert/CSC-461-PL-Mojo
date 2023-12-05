@@ -8,6 +8,13 @@ struct Array[T: AnyType]:
         for i in range(self.size):
             self.data.store(i, value)
 
+    fn __copyinit__(inout self, other: Self):
+        self.size = other.size
+        self.data = Pointer[T].alloc(self.size)
+        for i in range(self.size):
+            let value = other.data.load(i)
+            self.data.store(i, value)
+
     fn __getitem__(self, i: Int) -> T:
         return self.data.load(i)
 
