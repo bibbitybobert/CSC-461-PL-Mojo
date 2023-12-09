@@ -18,18 +18,14 @@ struct basic:
       self.player = player
 
    #returns the column in which it wants to place a piece
-   fn makeChoice(self, b: Board) -> Int64:
-      #for i in range(b.__cols):
-      #   var copy: Board = b
-      #   self.checkWin(copy.playPiece(self.player, i))
+   fn makeChoice(self, b: Board) -> Int:
+      var copy = b
       var choice = random_si64(0,b.__cols)
+      var isValid = copy.playPiece(self.player, choice.to_int())
+      while isValid == False:
+         choice = random_si64(0,b.__cols)
+         isValid = copy.playPiece(self.player, choice.to_int())
 
-      #else make a random choice and return
-      return choice
-      
-   
-   #calculate if spot will let you win
-   fn checkWin(self, b: Board, col: Int):
-    pass
+      return choice.to_int()
 
    

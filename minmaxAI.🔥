@@ -1,0 +1,68 @@
+from board import Board
+from array import Array
+
+"""
+Author: Erin Green
+
+Description: This is the struct for the basic AI, which has a very simplicstic
+desicion-making algorithm, which is essentially random decisions.
+
+To use this AI, simply call the choice function and pass in the board. The AI will return
+an integer representing the column in which it wants to play.
+"""
+struct minmaxAI:
+   var player: Int
+   var opponent: Int
+
+   #so we know which pieces are ours
+   fn __init__(inout self, player: Int, opponent: Int) -> None:
+      self.player = player
+      self.opponent = opponent
+
+   #returns the column in which it wants to place a piece
+   fn makeChoice(self, b: Board) -> Int64:
+     #set up an array to keep track of "game" score
+     var scores = Array[Int](b.__cols, 0)
+     var bestScore = scores.__getitem__(0)
+     var bestChoice = 0
+
+     self.min_max_alg(b, self.player, -1, scores)
+     
+     #choose best choice and move on
+     for i in range(0, b.__cols):
+      var score = scores.__getitem__(i)
+      if score > bestScore:
+         bestScore = score
+         bestChoice = i
+      print(scores.__getitem__(i)) #remove
+   
+     return bestChoice
+
+   #choice is the very first choice made, 
+   fn min_max_alg(self, b: Board, player: Int, choice: Int, inout scores: Array[Int]) -> None:
+      var bestChoice = 0
+      var temp = b
+      var win = temp.checkForWinner()
+      var nextPlayer = self.player if player == self.opponent else self.opponent
+
+      #if board has winner, set appropriate score
+      if win == True:
+         var currentScore = scores.__getitem__(choice)
+         if player == self.player:
+            scores.__setitem__(choice, currentScore-10)
+            return
+         else:
+            scores.__setitem__(choice, currentScore+10)
+            return
+
+      #otherwise loop through each col, attempting to make a move as a player
+      for i in range(0, b.__cols):
+         var copy = b
+         var validMove = copy.playPiece(player,i)
+         if validMove == True:
+            if choice == -1:
+               self.min_max_alg(copy, nextPlayer, i, scores)
+            else:
+               self.min_max_alg(copy, nextPlayer, choice, scores)
+
+   
