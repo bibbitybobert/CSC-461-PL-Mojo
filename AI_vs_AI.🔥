@@ -1,7 +1,8 @@
 from board import Board
 from python import Python
-import basicAI.🔥
-import avgAI.🔥
+from basicAI import basic_ai
+from avgAI import max_ai
+from minmaxAI import min_max_ai
 
 def AI_v_AI(playBoard: Board) -> Board:
     # Pseudocode time!!
@@ -12,7 +13,7 @@ def AI_v_AI(playBoard: Board) -> Board:
 
     ai1_type = ai1_type[0:2]
     if ai1_type == 'ra':
-        ai1 = randomAI(1)
+        ai1 = basic_ai(1)
     elif ai1_type == 'mi':
         ai1 = new min_max_ai(1, 5)
     elif ai1_type == 'ma':
@@ -22,7 +23,7 @@ def AI_v_AI(playBoard: Board) -> Board:
 
     ai2_type = ai2_type.toLower()[0:2]
     if ai2_type == 'ra':
-        ai2 = new randomAI(1)
+        ai2 = new basic_ai(1)
     elif ai2_type == 'mi':
         ai2 = new min_max_ai(1, 5)
     elif ai2_type == 'ma':

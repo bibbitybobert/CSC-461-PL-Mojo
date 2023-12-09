@@ -10,7 +10,7 @@ desicion-making algorithm, which is essentially random decisions.
 To use this AI, simply call the choice function and pass in the board. The AI will return
 an integer representing the column in which it wants to play.
 """
-struct basic:
+struct basic_ai:
    var player: Int
 
    #so we know which pieces are ours
