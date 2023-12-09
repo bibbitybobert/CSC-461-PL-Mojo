@@ -116,6 +116,7 @@ struct Board:
             return True
         return False
     
+    # this function is used for quick debugging, not final output
     fn printBoard(inout self, r: Int, c: Int) -> None:
         print("number to win: " + String(self.__numberToWin))
         print("array size " + String(self.__boardState.size))
