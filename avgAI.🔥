@@ -1,30 +1,43 @@
 from board import Board
 from array import Array
+from python import Python
 
 struct max_ai:
     var __id: Int
     var __max_depth: Int
+    var __oppID: Int
 
-    fn __init__(inout self, forward_sight: Int, id: Int):
-        self.__max_depth = forward_sight
+    fn __init__(inout self, id: Int, oppID: Int):
+        self.__id = id
+        self.__oppID = oppID
+        self.__max_depth = 5
 
-    fn makeChoice(self, b: Board) -> Int:
-        return self.max_alg(b, 0, True).get[1, Int]()
+    def makeChoice(inout self, b: Board) -> Int:
+        if b.__lastPlayedCol == -1 and b.__lastPlayedRow == -1:
+            return 4
+        return self.max_alg(b, 0, True).get[0, Int]()
 
-    fn max_alg(self, b:Board, depth:Int, maxPlayer:Bool) -> (Int, Int):
+    def max_alg(inout self, b:Board, depth:Int, maxPlayer:Bool) -> (Int, Int):
+        #print('depth: ' + String(depth))
+        # Python.evaluate('input()')
         # get all valid locations to play
         var all_valid_cols: Array[Bool] = self.get_valid_cols(b)
         # check if win possible
         var win_col: Int = self.win_possible(b)
-        var col_choice = -1
+        var block_win_col: Int = self.block_win_possible(b)
+        var col_choice = 4
 
-        if depth == self.__max_depth:
+        if depth == self.__max_depth or win_col != - 1 or block_win_col != -1:
         #   return score of current spot
-            return 0, self.current_score(b)
-        elif win_col != -1:
-            return win_col, 100
-        else:
-            return -1, 0
+            if win_col != -1:
+                # print('depth is max and win_col != -1')
+                return win_col, 10000
+            elif block_win_col != -1:
+                # print('block win')
+                return block_win_col, 900
+            else:
+                # print('depth is max and win_col == -1')
+                return col_choice, self.current_score(b)
 
         var value = 0
         for i in range(all_valid_cols.size):
@@ -32,16 +45,17 @@ struct max_ai:
             if all_valid_cols[i] == True:
                 var b_copy: Board = b
                 if maxPlayer:
-                    b_copy.playPiece(self.__id, i)
+                    var unusedBool = b_copy.playPiece(self.__id, i)
                 else:
-                    if self.__id == b_copy.__playerOneID:
-                        b_copy.playPiece(b_copy.__playerTwoID, i)
-                    else:
-                        b_copy.playPiece(b_copy.__playerOneID, i)
+                    var unusedBool = b_copy.playPiece(self.__oppID, i)
+
+                # b_copy.printBoard(b_copy.__rows, b_copy.__cols)
                 var new_score = self.max_alg(b_copy, depth + 1, maxPlayer ^ True).get[1, Int]()
+                # print('score for col ' + String(i) + ': ' + String(new_score))
+                # Python.evaluate('input()')
                 if new_score > value:
                     value = new_score
-                    var col_choice = i
+                    col_choice = i
         return col_choice, value
         #   new_score = self.max_alg(bcopy_board, depth + 1, maxPlayer ^ True).get[1, Int]()
         #   if new_score > value:
@@ -49,21 +63,30 @@ struct max_ai:
         #       col_choice = col
         #return col_choice, value
 
-    fn get_valid_cols(self, b: Board) -> Array[Bool]:
+    fn get_valid_cols(inout self, b: Board) -> Array[Bool]:
         var valid_col_arry: Array[Bool] = Array[Bool](b.__cols, False)
         for i in range(b.__cols):
             if b.__piecesInColumns[i] != b.__rows:
                 valid_col_arry[i] = True
+        return valid_col_arry
 
-    fn win_possible(self, b:Board) -> Int:
+    fn win_possible(inout self, b:Board) -> Int:
         for i in range(b.__cols):
             var copy:Board = b # need keiran to implement board copy functionality
-            copy.playPiece(self.__id, i)
+            var unusedBool = copy.playPiece(self.__id, i)
             if copy.checkForWinner():
                 return i
         return -1
 
-    fn current_score(self, b: Board) -> Int:
+    fn block_win_possible(inout self, b:Board) -> Int:
+        for i in range(b.__cols):
+            var copy:Board = b # need keiran to implement board copy functionality
+            var unusedBool = copy.playPiece(self.__oppID, i)
+            if copy.checkForWinner():
+                return i
+        return -1
+
+    fn current_score(inout self, b: Board) -> Int:
         var score = 0
         # check for block win
         # horiz'
@@ -100,26 +123,95 @@ struct max_ai:
             
         return score
 
-    fn score_array(self, arry: Array[Int]) -> Int:
+    fn score_array(inout self, arry: Array[Int]) -> Int:
         if arry.__getitem__(0) == self.__id and  arry.__getitem__(1) == self.__id and 
             arry.__getitem__(2) == self.__id and  arry.__getitem__(3) == self.__id:
-            return 100 # win
+            return 10000 # win
+
+        elif arry.__getitem__(0) == self.__oppID and  arry.__getitem__(1) == self.__oppID and 
+            arry.__getitem__(2) == self.__oppID and  arry.__getitem__(3) == self.__id:
+            return 900 # block win
+        elif arry.__getitem__(0) == self.__oppID and  arry.__getitem__(1) == self.__oppID and 
+            arry.__getitem__(2) == self.__id and  arry.__getitem__(3) == self.__oppID:
+            return 900 # block win
+        elif arry.__getitem__(0) == self.__oppID and  arry.__getitem__(1) == self.__id and 
+            arry.__getitem__(2) == self.__oppID and  arry.__getitem__(3) == self.__oppID:
+            return 900 # block win
+        elif arry.__getitem__(0) == self.__id and  arry.__getitem__(1) == self.__oppID and 
+            arry.__getitem__(2) == self.__oppID and  arry.__getitem__(3) == self.__oppID:
+            return 900 # block win
+
         elif arry.__getitem__(0) == self.__id and arry.__getitem__(1) == self.__id and 
-            arry.__getitem__(2) == self.__id and arry.__getitem__(3) != self.__id:
+            arry.__getitem__(2) == self.__id:
             return 10 # 3 in row
-        elif arry.__getitem__(0) != self.__id and arry.__getitem__(1) == self.__id and 
-            arry.__getitem__(2) == self.__id and arry.__getitem__(3) == self.__id:
+        elif arry.__getitem__(1) == self.__id and arry.__getitem__(2) == self.__id and 
+            arry.__getitem__(3) == self.__id:
             return 10 # 3 in row
-        elif arry.__getitem__(0) == self.__id and arry.__getitem__(1) == self.__id and 
-            arry.__getitem__(2) != self.__id and arry.__getitem__(3) != self.__id:
+
+
+        elif arry.__getitem__(0) == self.__oppID and arry.__getitem__(1) == self.__oppID and 
+            arry.__getitem__(2) == self.__id:
+            return 8 # block 3 in row
+        elif arry.__getitem__(1) == self.__oppID and arry.__getitem__(2) == self.__oppID and 
+            arry.__getitem__(3) == self.__id:
+            return 8 # block 3 in row
+        elif arry.__getitem__(0) == self.__oppID and arry.__getitem__(1) == self.__id and 
+            arry.__getitem__(2) == self.__oppID:
+            return 8 # block 3 in row
+        elif arry.__getitem__(1) == self.__oppID and arry.__getitem__(2) == self.__id and 
+            arry.__getitem__(3) == self.__oppID:
+            return 8 # block 3 in row
+        elif arry.__getitem__(0) == self.__id and arry.__getitem__(1) == self.__oppID and 
+            arry.__getitem__(2) == self.__oppID:
+            return 8 # block 3 in row
+        elif arry.__getitem__(1) == self.__id and arry.__getitem__(2) == self.__oppID and 
+            arry.__getitem__(3) == self.__oppID:
+            return 8 # block 3 in row
+
+        elif arry.__getitem__(0) == self.__id and arry.__getitem__(1) == self.__id:
             return 5 # 2 in row
-        elif arry.__getitem__(0) != self.__id and arry.__getitem__(1) != self.__id and 
-            arry.__getitem__(2) == self.__id and arry.__getitem__(3) == self.__id:
+        elif arry.__getitem__(1) == self.__id and arry.__getitem__(2) == self.__id:
             return 5 # 2 in row
-        elif arry.__getitem__(0) != self.__id and arry.__getitem__(1) == self.__id and 
-            arry.__getitem__(2) == self.__id and arry.__getitem__(3) != self.__id:
+        elif arry.__getitem__(2) == self.__id and arry.__getitem__(3) == self.__id:
             return 5 # 2 in row
         else:
             return 0
+
+
+'''
+def main():
+    var testing: Board = Board(7, 7, 4, 1, 2)
+    var ai2: max_ai =  max_ai(2, 1)
+    var choiceStr: String = '0'
+    var choice: Int = 1
+    while True:
+        choiceStr = Python.evaluate('input("Where to play:> ")').to_string()
+        if choiceStr == '1': 
+            testing.playPiece(1, 0)
+        elif choiceStr == '2':
+            testing.playPiece(1, 1)
+        elif choiceStr == '3':
+            testing.playPiece(1, 2)
+        elif choiceStr == '4':
+            testing.playPiece(1, 3)
+        elif choiceStr == '5':
+            testing.playPiece(1, 4)
+        elif choiceStr == '6':
+            testing.playPiece(1, 5)
+        elif choiceStr == '7':
+            testing.playPiece(1, 6)
+
+        testing.printBoard(testing.__rows, testing.__cols)
+        if testing.checkForWinner() == True:
+            print('YOU WON')
+            return
+        testing.playPiece(2, ai2.makeChoice(testing))
+        testing.printBoard(testing.__rows, testing.__cols)
+        if testing.checkForWinner() == True:
+            print('AI WON')
+            return
+'''
+
+
 
     
