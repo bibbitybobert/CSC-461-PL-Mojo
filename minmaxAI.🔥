@@ -20,7 +20,7 @@ struct min_max_ai:
       self.opponent = opponent
 
    #returns the column in which it wants to place a piece
-   fn makeChoice(self, b: Board) -> Int64:
+   fn makeChoice(self, b: Board) -> Int:
      #set up an array to keep track of "game" score
      var scores = Array[Int](b.__cols, 0)
      var bestScore = scores.__getitem__(0)
@@ -58,7 +58,7 @@ struct min_max_ai:
       #otherwise loop through each col, attempting to make a move as a player
       for i in range(0, b.__cols):
          var copy = b
-         var validMove = copy.playPiece(player,i)
+         let validMove = copy.playPiece(player,i)
          if validMove == True:
             if choice == -1:
                self.min_max_alg(copy, nextPlayer, i, scores)
