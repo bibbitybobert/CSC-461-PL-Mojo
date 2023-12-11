@@ -192,8 +192,7 @@ struct Menu:
             let piece = self.history.piecesPlayed[play]
             tmpBoard.playPiece(piece, move)
             commandLine.displayBoard(tmpBoard)
-            
-        print(self.history.piecesPlayed[lastMove - 1])
+
         if lastPiece == 0:
             print("AI 1 has won!")
 
@@ -265,22 +264,4 @@ struct Menu:
 
 
 
-def main():
-    input = py.import_module("builtins").input
 
-    while True:
-        var menu = Menu()
-
-        showMoves = yesOrNo("Would you like to see the moves played?")
-
-        if showMoves:
-            menu.history.showMoves(menu.player1, menu.player2)
-
-        outputHistory = yesOrNo("Would you like to output the history of the game?")
-
-        if outputHistory:
-            menu.history.writeMovesToFile(menu.player1, menu.player2)
-
-        playAgain = input("Would you like to play again? (y/n): ").__str__()
-        if playAgain == "n" or playAgain == "N":
-            break
