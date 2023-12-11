@@ -1,3 +1,14 @@
+"""
+Author: Keiran Berry
+
+Description: This is an array class, as mojo does not have 
+one built in. It is templated to work with any type that is 
+not complex (most primitive types, but not structs). To create a new 
+array, simply give it a type and a size. 
+
+Example: var newArray: Array[Int] = Array[Int](5)
+"""
+
 struct Array[T: AnyRegType]:
     var data: Pointer[T]
     var size: Int
