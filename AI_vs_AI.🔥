@@ -11,8 +11,8 @@ def AI_v_AI(playBoard: Board) -> Board:
     var ai1_type: String = 'max'
     var ai2_type: String = 'max'
 
-    ai1_type = Python.evaluate("input('AI player 1 (random, minmax, max):>').lower()").to_string()
-    ai2_type = Python.evaluate("input('AI player 2 (random, minmax, max):>').lower()").to_string()
+    ai1_type = Python.evaluate("input('AI player 1 (random, minmax, max):>').lower()").__str__()
+    ai2_type = Python.evaluate("input('AI player 2 (random, minmax, max):>').lower()").__str__()
 
 
     var ai1: stdAI = stdAI(1, 2, ai1_type[0:2])

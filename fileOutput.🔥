@@ -35,7 +35,7 @@ def outputHistory(inout history: History, player1: String, player2: String) -> N
             
             var move = "Move #" + String(history.moves[b]) + "\n"+ player + "'s turn:\n"
 
-            tempBoard.playPiece(piecePlayed, move)
+            tempBoard.playPiece(piecePlayed, history.moves[b])
 
             file.write(move)
             file.write(formatBoard(tempBoard))
