@@ -13,11 +13,13 @@ an integer representing the column in which it wants to play.
 struct min_max_ai:
    var player: Int
    var opponent: Int
+   var maxDepth : Int
 
    #so we know which pieces are ours
    fn __init__(inout self, player: Int, opponent: Int) -> None:
       self.player = player
       self.opponent = opponent
+      self.maxDepth = 5
 
    #returns the column in which it wants to place a piece
    fn makeChoice(self, b: Board) -> Int:
@@ -26,34 +28,39 @@ struct min_max_ai:
      var bestScore = scores.__getitem__(0)
      var bestChoice = 0
 
-     self.min_max_alg(b, self.player, -1, scores)
-     
+     self.min_max_alg(0, b, self.player, -1, scores)
+
      #choose best choice and move on
      for i in range(0, b.__cols):
-      var score = scores.__getitem__(i)
-      if score > bestScore:
-         bestScore = score
-         bestChoice = i
-      print(scores.__getitem__(i)) #remove
+        var score = scores.__getitem__(i)
+        if score > bestScore:
+            bestScore = score
+            bestChoice = i
    
      return bestChoice
 
    #choice is the very first choice made, 
-   fn min_max_alg(self, b: Board, player: Int, choice: Int, inout scores: Array[Int]) -> None:
+   fn min_max_alg(self, depth: Int, b: Board, player: Int, choice: Int, inout scores: Array[Int]) -> None:
       var bestChoice = 0
       var temp = b
-      var win = temp.checkForWinner()
-      var nextPlayer = self.player if player == self.opponent else self.opponent
-
+      let win = temp.checkForWinner()
+      let nextPlayer = self.player if player == self.opponent else self.opponent
+      
+      temp.__del__()
       #if board has winner, set appropriate score
       if win == True:
-         var currentScore = scores.__getitem__(choice)
+         let currentScore = scores.__getitem__(choice)
          if player == self.player:
             scores.__setitem__(choice, currentScore-10)
             return
          else:
-            scores.__setitem__(choice, currentScore+10)
+            if depth == 1:
+               scores.__setitem__(choice, 100000)
+            else:
+               scores.__setitem__(choice, currentScore+10)
             return
+      elif depth == self.maxDepth:
+         return
 
       #otherwise loop through each col, attempting to make a move as a player
       for i in range(0, b.__cols):
@@ -61,8 +68,9 @@ struct min_max_ai:
          let validMove = copy.playPiece(player,i)
          if validMove == True:
             if choice == -1:
-               self.min_max_alg(copy, nextPlayer, i, scores)
+               self.min_max_alg(depth+1, copy, nextPlayer, i, scores)
             else:
-               self.min_max_alg(copy, nextPlayer, choice, scores)
+               self.min_max_alg(depth+1, copy, nextPlayer, choice, scores)
+         copy.__del__()
 
    
