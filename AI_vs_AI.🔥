@@ -10,7 +10,6 @@ import commandLine
 def AI_v_AI(playBoard: Board) -> History:
     var playHist: History = History(6 * 7 + 10)
     var selfPlayBoard: Board = playBoard
-    #selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
     print('What types of AI would you like to pit against each other??')
     var ai1_type: String = 'random'
     var ai2_type: String = 'random'

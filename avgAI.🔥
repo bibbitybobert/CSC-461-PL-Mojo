@@ -8,8 +8,8 @@ struct max_ai:
     var __oppID: Int
 
     fn __init__(inout self, id: Int, oppID: Int):
-        self.__id = id
-        self.__oppID = oppID
+        self.__id = id - 1
+        self.__oppID = oppID - 1
         self.__max_depth = 3
 
     def makeChoice(inout self, b: Board) -> Int:
