@@ -75,11 +75,11 @@ struct Menu:
         playerPiece = 0 if player == 1 else 1
         
         locationToPlay = input(playerName + ", please enter the column you would like to play in: ").__str__()
-        locNum = atol(locationToPlay)
+        locNum = atol(locationToPlay) - 1
 
-        while self.board.getPieceAtLocation(0, locNum) != -1:
+        while self.board.getPieceAtLocation(0, locNum) != -1 or (locNum < 0 or locNum >= self.board.__cols):
             locationToPlay = input("That column is full, please enter a different column: ").__str__()
-            locNum = atol(locationToPlay)
+            locNum = atol(locationToPlay) - 1
 
         self.history.addMove(locNum, playerPiece)
 
