@@ -23,6 +23,10 @@ def formatBoard(inout board: Board) -> String:
 def normalizePiece(piece: String) -> String:
     if piece == '-1':
         return ' '
+    if piece == "0":
+        return 'O'
+    if piece == "1":
+        return 'X'
     return piece
 
 def displayBoard(inout board: Board) -> None:
