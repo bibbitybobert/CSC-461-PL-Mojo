@@ -177,12 +177,71 @@ struct Menu:
             print("The AI has won!")
 
     def playAIvAI(inout self):
-        pass
+        from minmaxAI import min_max_ai
+        from avgAI import max_ai
+        from basicAI import basic_ai
+        input = py.import_module("builtins").input
+
+        easyPlayer1 = basic_ai(1)
+        mediumPlayer1 = max_ai(1,0)
+        hardPlayer1 = min_max_ai(1,0)
+
+        easyPlayer2 = basic_ai(0)
+        mediumPlayer2 = max_ai(0,1)
+        hardPlayer2 = min_max_ai(0,1)
+
+        print("What difficulty would you like the first AI to be?")
+        ai1 = chooseAI()
+
+        print("What difficulty would you like the second AI to be?")
+        ai2 = chooseAI()
+
+        var isPlayer1Turn = True
+
+        while self.board.checkForWinner() == False: # Play until a player has won
+            if isPlayer1Turn:
+                choice = -1
+                if ai1 == 1:
+                    choice = easyPlayer1.makeChoice(self.board)
+                elif ai1 == 2:
+                    choice = mediumPlayer1.makeChoice(self.board)
+                elif ai1 == 3:
+                    choice = hardPlayer1.makeChoice(self.board)
+
+                print(choice)
+
+                self.board.playPiece(0, choice)
+            else:
+                choice = -1
+                
+                if ai2 == 1:
+                    choice = easyPlayer2.makeChoice(self.board)
+                elif ai2 == 2:
+                    choice = mediumPlayer2.makeChoice(self.board)
+                elif ai2 == 3:
+                    choice = hardPlayer2.makeChoice(self.board)
+
+                print(choice)
+
+                self.board.playPiece(1, choice)
+
+            commandLine.displayBoard(self.board)
+
+            isPlayer1Turn = not isPlayer1Turn
+
+            input() # So so users can click through the game
+            
+
+        if not isPlayer1Turn:
+            print("AI 1 has won!")
+        else:   
+            print("AI 2 has won!")
 
 
 
 
 def main():
+
     while True:
         var menu = Menu()
 
