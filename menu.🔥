@@ -34,16 +34,19 @@ def chooseAI():
 
     return ai
 
+from history import History
 
 struct Menu:
     var board: Board
     var player1: String
     var player2: String
+    var history: History
 
     def __init__(inout self):
         input = py.import_module("builtins").input
         self.player1 = "Player 1"
         self.player2 = "Player 2"
+        self.history = History(6 * 7 + 10)
 
         self.board = Board(6, 7, 4, 1, 2)
 
@@ -65,7 +68,6 @@ struct Menu:
         else:
             self.playPvP()
 
-
     def playerPlay(inout self, player : Int):
         input = py.import_module("builtins").input
 
@@ -78,6 +80,8 @@ struct Menu:
         while self.board.getPieceAtLocation(0, locNum) != -1:
             locationToPlay = input("That column is full, please enter a different column: ").__str__()
             locNum = atol(locationToPlay)
+
+        self.history.addMove(locNum, playerPiece)
 
         self.board.playPiece(playerPiece, locNum)
 
@@ -127,8 +131,6 @@ struct Menu:
         else:   
             print("The AI has won!")
 
-
-
     def playMedium(inout self):
         from avgAI import max_ai
         ai = max_ai(1,0)
@@ -151,7 +153,6 @@ struct Menu:
             print(self.player1 + " has won!")
         else:   
             print("The AI has won!")
-
 
     def playHard(inout self):
         from minmaxAI import min_max_ai
@@ -241,11 +242,20 @@ struct Menu:
 
 
 def main():
+    input = py.import_module("builtins").input
 
     while True:
         var menu = Menu()
 
-        input = py.import_module("builtins").input
+        showMoves = yesOrNo("Would you like to see the moves played?")
+
+        if showMoves:
+            menu.history.showMoves(menu.player1, menu.player2)
+
+        outputHistory = yesOrNo("Would you like to output the history of the game?")
+
+        if outputHistory:
+            menu.history.writeMovesToFile(menu.player1, menu.player2)
 
         playAgain = input("Would you like to play again? (y/n): ").__str__()
         if playAgain == "n" or playAgain == "N":

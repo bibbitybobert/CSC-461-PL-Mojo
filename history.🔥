@@ -1,0 +1,64 @@
+from array import Array
+
+struct History:
+    var moves: Array[Int] # the column of the move
+    var piecesPlayed: Array[Int] # the player who made the move
+    var index: Int # Index tells you how many moves are in the structure. It is exclusive, so if index is 3, then there are 3 moves in the structure, and the moves are at index 0, 1, and 2
+    #var iterIndex: Int
+
+    def __init__(inout self, possibleMoves: Int):
+        self.moves = Array[Int](possibleMoves, -1)
+        self.piecesPlayed = Array[Int](possibleMoves, -1)
+        self.index = 0 
+
+    def addMove(inout self, move: Int, playedPiece: Int):
+        self.moves[self.index] = move
+        self.piecesPlayed[self.index] = playedPiece
+        self.index += 1
+
+    def getLenOfMoves(inout self):
+        return self.index
+
+    def showMoves(inout self, player1: String, player2: String):
+        print("Moves played:")
+
+        for play in range(self.getLenOfMoves()):
+            move  = self.moves[play]
+            piecePlayed = self.piecesPlayed[play]
+
+            player = player1 if piecePlayed == 0 else player2
+
+            print(player + " played in column " + move.__str__())
+
+    def writeMovesToFile(inout self, player1: String, player2 : String):
+        from board import Board
+        from commandLine import formatBoard
+        from python import Python as py
+        input = py.import_module("builtins").input
+        
+        var outStr: String = ""
+        tmpBoard = Board(6, 7, 4, 1, 2)
+
+        for play in range(self.getLenOfMoves()):
+            move  = self.moves[play]
+            piecePlayed = self.piecesPlayed[play]
+
+            player = player1 if piecePlayed == 0 else player2
+
+            tmpBoard.playPiece(piecePlayed, move)
+
+            outStr = outStr + formatBoard(tmpBoard) + "\n\n"
+
+        print(outStr)
+
+        outFile = input("Please enter the name of the file you would like to output to: ").__str__()
+
+        with open(outFile, "w") as f:
+            f.write(outStr)
+
+
+
+    
+
+        
+    
