@@ -24,9 +24,13 @@ def outputHistory(inout history: History, player1: String, player2: String) -> N
     input = py.import_module("builtins").input
     var outFile = input("Please enter the name of the file you would like to output to: ").__str__()
 
+    os = py.import_module("os")
+
+    baseLoc = os.getcwd().__str__()
+
     var tempBoard = Board(6, 7, 4, 1, 2)
 
-    with open("Game History.txt", 'w') as file:
+    with open(baseLoc+ "/" + "Game History.txt", 'w') as file:
         file.write("Game History\n")
         var n = history.getLenOfMoves()
         for b in range(n):
