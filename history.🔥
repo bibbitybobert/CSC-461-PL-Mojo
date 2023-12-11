@@ -13,12 +13,14 @@ struct History:
 
     fn __copyinit__(inout self, other: History):
         self.moves = Array[Int](other.moves.size, -1)
-        for move in range(other.moves.size):
+        self.moves = other.moves
+        self.piecesPlayed = other.piecesPlayed
+        """for move in range(other.moves.size):
             self.moves[move] = other.moves[move]
 
         self.piecesPlayed = Array[Int](other.piecesPlayed.size, -1)
         for piece in range(other.piecesPlayed.size):
-            self.piecesPlayed[piece] = 0 if piece%2 == 0 else 1  #other.piecesPlayed[piece]
+            self.piecesPlayed[piece] = 0 if piece % 2 == 0 else 1  #other.piecesPlayed[piece]"""
 
         self.index = other.index
 
