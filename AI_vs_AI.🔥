@@ -3,42 +3,47 @@ from python import Python
 from basicAI import basic_ai
 from avgAI import max_ai
 from minmaxAI import min_max_ai
+from history import History
+import commandLine
 
-def AI_v_AI(playBoard: Board) -> Board:
+
+def AI_v_AI(playBoard: Board) -> History:
+    var playHist: History = History(6 * 7 + 10)
     var selfPlayBoard: Board = playBoard
     selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
     print('What types of AI would you like to pit against each other??')
-    var ai1_type: String = 'max'
-    var ai2_type: String = 'max'
+    var ai1_type: String = 'random'
+    var ai2_type: String = 'random'
 
-    ai1_type = Python.evaluate("input('AI player 1 (random, minmax, max):>').lower()").to_string()
-    ai2_type = Python.evaluate("input('AI player 2 (random, minmax, max):>').lower()").to_string()
+    input = Python.import_module("bultins").input
+
+    ai1_type = input('AI player 1 (e, m, h):> ').__str__()
+    ai2_type = input('AI player 2 (e, m, h):> ').__str__()
 
 
-    var ai1: stdAI = stdAI(1, 2, ai1_type[0:2])
-    var ai2: stdAI = stdAI(2, 1, ai2_type[0:2])
+    var ai1: stdAI = stdAI(1, 2, ai1_type)
+    var ai2: stdAI = stdAI(2, 1, ai2_type)
     
     var i = 0
     while True:
-        # print('i: ' + String(i))
-        Python.evaluate('input()')
         let ai1Choice = ai1.choice(selfPlayBoard)
-        # print('ai1 Choice: ' + String(ai1Choice))
+        playHist.addMove(ai1Choice, 1)
         var unusedBool = selfPlayBoard.playPiece(1, ai1Choice)
         selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
             # print('AI 1 WINS!!!!')
-            return selfPlayBoard
+            return playHist
+
+        input()
 
         let ai2Choice = ai2.choice(selfPlayBoard)
+        playHist.addMove(ai2Choice, 2)
         unusedBool = selfPlayBoard.playPiece(2, ai2Choice)
         selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
             # print('AI 2 WINS!!!!')
-            return selfPlayBoard
+            return playHist
         i += 1
-
-    return selfPlayBoard
 
 struct stdAI:
     var selfType: String
@@ -53,19 +58,12 @@ struct stdAI:
 
 
     def choice(inout self, board: Board) -> Int:
-        if self.selfType == 'ra':
+        if self.selfType == 'e':
             return self.selfrand.makeChoice(board)
-        elif self.selfType == 'mi':
+        elif self.selfType == 'm':
             return self.selfMinMax.makeChoice(board)
-        elif self.selfType == 'ma':
+        elif self.selfType == 'h':
             return self.selfMax.makeChoice(board)
         else:
             print('ERROR')
             return -1
-
-
-
-def main():
-    var board: Board = Board(7, 7, 4, 1, 2)
-    board = AI_v_AI(board)
-        

@@ -25,7 +25,7 @@ struct max_ai:
         let block_win_col: Int = self.block_win_possible(b)
         var col_choice = 4
 
-        if depth == self.__max_depth or win_col != - 1 or block_win_col != -1:
+        if depth == self.__max_depth or win_col != -1 or block_win_col != -1:
         #   return score of current spot
             if win_col != -1:
                 return win_col, 10000
