@@ -1,4 +1,4 @@
-struct Array[T: AnyType]:
+struct Array[T: AnyRegType]:
     var data: Pointer[T]
     var size: Int
 
