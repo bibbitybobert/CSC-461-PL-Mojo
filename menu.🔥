@@ -178,7 +178,31 @@ struct Menu:
             print("The AI has won!")
 
     def playAIvAI(inout self):
-        from minmaxAI import min_max_ai
+        from AI_vs_AI import AI_v_AI
+
+        self.history = AI_v_AI(self.board)
+
+        let lastMove = self.history.getLenOfMoves() - 1
+
+        let lastPiece = self.history.piecesPlayed[lastMove]
+        
+        var tmpBoard = Board(6, 7, 4, 1, 2)
+        for play in range(self.history.getLenOfMoves()):
+            let move = self.history.moves[play]
+            let piece = self.history.piecesPlayed[play]
+            tmpBoard.playPiece(piece, move)
+            commandLine.displayBoard(tmpBoard)
+            
+        print(self.history.piecesPlayed[lastMove - 1])
+        if lastPiece == 0:
+            print("AI 1 has won!")
+
+        else:
+            print("AI 2 has won!")
+
+
+
+        """from minmaxAI import min_max_ai
         from avgAI import max_ai
         from basicAI import basic_ai
         input = py.import_module("builtins").input
@@ -236,7 +260,7 @@ struct Menu:
         if not isPlayer1Turn:
             print("AI 1 has won!")
         else:   
-            print("AI 2 has won!")
+            print("AI 2 has won!")"""
 
 
 

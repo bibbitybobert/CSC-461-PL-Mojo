@@ -10,12 +10,12 @@ import commandLine
 def AI_v_AI(playBoard: Board) -> History:
     var playHist: History = History(6 * 7 + 10)
     var selfPlayBoard: Board = playBoard
-    selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
+    #selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
     print('What types of AI would you like to pit against each other??')
     var ai1_type: String = 'random'
     var ai2_type: String = 'random'
 
-    input = Python.import_module("bultins").input
+    input = Python.import_module("builtins").input
 
     ai1_type = input('AI player 1 (e, m, h):> ').__str__()
     ai2_type = input('AI player 2 (e, m, h):> ').__str__()
@@ -27,19 +27,19 @@ def AI_v_AI(playBoard: Board) -> History:
     var i = 0
     while True:
         let ai1Choice = ai1.choice(selfPlayBoard)
-        playHist.addMove(ai1Choice, 1)
-        var unusedBool = selfPlayBoard.playPiece(1, ai1Choice)
-        selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
+        playHist.addMove(ai1Choice, 0)
+        var unusedBool = selfPlayBoard.playPiece(0, ai1Choice)
+        #selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
             # print('AI 1 WINS!!!!')
             return playHist
 
-        input()
+        #input()
 
         let ai2Choice = ai2.choice(selfPlayBoard)
-        playHist.addMove(ai2Choice, 2)
-        unusedBool = selfPlayBoard.playPiece(2, ai2Choice)
-        selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
+        playHist.addMove(ai2Choice, 1)
+        unusedBool = selfPlayBoard.playPiece(1, ai2Choice)
+        #selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
             # print('AI 2 WINS!!!!')
             return playHist
