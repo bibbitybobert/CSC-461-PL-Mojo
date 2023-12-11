@@ -19,7 +19,7 @@ struct History:
     def getLenOfMoves(inout self):
         return self.index
 
-    def showMoves(inout self, player1: String, player2: String):
+    '''def showMoves(inout self, player1: String, player2: String):
         print("Moves played:")
 
         for play in range(self.getLenOfMoves()):
@@ -29,36 +29,6 @@ struct History:
             player = player1 if piecePlayed == 0 else player2
 
             print(player + " played in column " + move.__str__())
-
-    def writeMovesToFile(inout self, player1: String, player2 : String):
-        from board import Board
-        from commandLine import formatBoard
-        from python import Python as py
-        input = py.import_module("builtins").input
-        
-        var outStr: String = ""
-        tmpBoard = Board(6, 7, 4, 1, 2)
-
-        for play in range(self.getLenOfMoves()):
-            move  = self.moves[play]
-            piecePlayed = self.piecesPlayed[play]
-
-            player = player1 if piecePlayed == 0 else player2
-
-            tmpBoard.playPiece(piecePlayed, move)
-
-            outStr = outStr + formatBoard(tmpBoard) + "\n\n"
-
-        print(outStr)
-
-        outFile = input("Please enter the name of the file you would like to output to: ").__str__()
-
-        with open(outFile, "w") as f:
-            f.write(outStr)
-
-
-
-    
-
+    '''
         
     

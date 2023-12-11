@@ -1,12 +1,42 @@
-'''def outputHistory(inout history: DynamicVector[DynamicVector[StringLiteral]]) -> None:
+from commandLine import *
+from board import Board
+from history import History
+from python import Python as py
+
+def main():
+    var b = Board(6, 7, 4, 1, 2)
+    var h = History(42)
+    h.addMove(1, 1)
+    b.playPiece(1, 1)
+    displayBoard(b)
+    h.addMove(1, 2)
+    b.playPiece(2, 1)
+    displayBoard(b)
+    h.addMove(1, 1)
+    b.playPiece(1, 1)
+    displayBoard(b)
+
+    outputHistory(h, "one", "two")
+
+
+def outputHistory(inout history: History, player1: String, player2: String) -> None:
     # takes in a list of boards, formats them, and outputs them to a file
+    input = py.import_module("builtins").input
+    var outFile = input("Please enter the name of the file you would like to output to: ").__str__()
+
+    var tempBoard = Board(6, 7, 4, 1, 2)
+
     with open("Game History.txt", 'w') as file:
-        file.write("Game History")
-        var index = 0
-        var n = history.size
+        file.write("Game History\n")
+        var n = history.getLenOfMoves()
         for b in range(n):
-            var move = "Move #" + String(index) + ":"
+            var piecePlayed = history.piecesPlayed[b]
+            var player = player1 if piecePlayed == 0 else player2
+            
+            var move = "Move #" + String(history.moves[b]) + "\n"+ player + "'s turn:\n"
+
+            tempBoard.playPiece(piecePlayed, move)
+
             file.write(move)
-            file.write(formatBoard(history[b]))
-            index += 1
-'''
+            file.write(formatBoard(tempBoard))
+            file.write("\n\n")
