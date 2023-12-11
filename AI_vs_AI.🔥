@@ -20,21 +20,21 @@ def AI_v_AI(playBoard: Board) -> Board:
     
     var i = 0
     while True:
-        print('i: ' + String(i))
+        # print('i: ' + String(i))
         Python.evaluate('input()')
         let ai1Choice = ai1.choice(selfPlayBoard)
-        print('ai1 Choice: ' + String(ai1Choice))
+        # print('ai1 Choice: ' + String(ai1Choice))
         var unusedBool = selfPlayBoard.playPiece(1, ai1Choice)
         selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
-            print('AI 1 WINS!!!!')
+            # print('AI 1 WINS!!!!')
             return selfPlayBoard
 
         let ai2Choice = ai2.choice(selfPlayBoard)
         unusedBool = selfPlayBoard.playPiece(2, ai2Choice)
         selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
-            print('AI 2 WINS!!!!')
+            # print('AI 2 WINS!!!!')
             return selfPlayBoard
         i += 1
 
@@ -64,9 +64,8 @@ struct stdAI:
             return -1
 
 
-'''
+
 def main():
     var board: Board = Board(7, 7, 4, 1, 2)
     board = AI_v_AI(board)
-'''
         
