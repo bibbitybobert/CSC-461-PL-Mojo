@@ -8,8 +8,8 @@ struct max_ai:
     var __oppID: Int
 
     fn __init__(inout self, id: Int, oppID: Int):
-        self.__id = id
-        self.__oppID = oppID
+        self.__id = id - 1
+        self.__oppID = oppID - 1
         self.__max_depth = 3
 
     def makeChoice(inout self, b: Board) -> Int:
@@ -25,7 +25,7 @@ struct max_ai:
         let block_win_col: Int = self.block_win_possible(b)
         var col_choice = 4
 
-        if depth == self.__max_depth or win_col != - 1 or block_win_col != -1:
+        if depth == self.__max_depth or win_col != -1 or block_win_col != -1:
         #   return score of current spot
             if win_col != -1:
                 return win_col, 10000
