@@ -30,7 +30,7 @@ def outputHistory(inout history: History, player1: String, player2: String) -> N
 
     var tempBoard = Board(6, 7, 4, 1, 2)
 
-    with open(baseLoc+ "/" + "Game History.txt", 'w') as file:
+    with open(baseLoc+ "/" + outFile, 'w') as file:
         file.write("Game History\n")
         var n = history.getLenOfMoves()
         for b in range(n):
