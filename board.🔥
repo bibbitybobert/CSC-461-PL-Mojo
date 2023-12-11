@@ -51,7 +51,7 @@ struct Board:
 
 
     fn playPiece(inout self, piece: Int, column: Int) -> Bool:
-        if column < 0 or column >= self.__cols:
+        if column < 0 or column >= self.__cols or self.__piecesInColumns[column] >= self.__rows:
             # Column is not in the range of playable columns
             return False
         else:
