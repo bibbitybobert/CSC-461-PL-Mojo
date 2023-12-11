@@ -10,7 +10,7 @@ struct max_ai:
     fn __init__(inout self, id: Int, oppID: Int):
         self.__id = id
         self.__oppID = oppID
-        self.__max_depth = 5
+        self.__max_depth = 3
 
     def makeChoice(inout self, b: Board) -> Int:
         if b.__lastPlayedCol == -1 and b.__lastPlayedRow == -1:
@@ -18,25 +18,20 @@ struct max_ai:
         return self.max_alg(b, 0, True).get[0, Int]()
 
     def max_alg(inout self, b:Board, depth:Int, maxPlayer:Bool) -> (Int, Int):
-        #print('depth: ' + String(depth))
-        # Python.evaluate('input()')
         # get all valid locations to play
-        var all_valid_cols: Array[Bool] = self.get_valid_cols(b)
+        let all_valid_cols: Array[Bool] = self.get_valid_cols(b)
         # check if win possible
-        var win_col: Int = self.win_possible(b)
-        var block_win_col: Int = self.block_win_possible(b)
+        let win_col: Int = self.win_possible(b)
+        let block_win_col: Int = self.block_win_possible(b)
         var col_choice = 4
 
         if depth == self.__max_depth or win_col != - 1 or block_win_col != -1:
         #   return score of current spot
             if win_col != -1:
-                # print('depth is max and win_col != -1')
                 return win_col, 10000
             elif block_win_col != -1:
-                # print('block win')
                 return block_win_col, 900
             else:
-                # print('depth is max and win_col == -1')
                 return col_choice, self.current_score(b)
 
         var value = 0
@@ -45,57 +40,58 @@ struct max_ai:
             if all_valid_cols[i] == True:
                 var b_copy: Board = b
                 if maxPlayer:
-                    var unusedBool = b_copy.playPiece(self.__id, i)
+                    let unusedBool = b_copy.playPiece(self.__id, i)
                 else:
-                    var unusedBool = b_copy.playPiece(self.__oppID, i)
+                    let unusedBool = b_copy.playPiece(self.__oppID, i)
 
-                # b_copy.printBoard(b_copy.__rows, b_copy.__cols)
-                var new_score = self.max_alg(b_copy, depth + 1, maxPlayer ^ True).get[1, Int]()
-                # print('score for col ' + String(i) + ': ' + String(new_score))
-                # Python.evaluate('input()')
+                let new_score = self.max_alg(b_copy, depth + 1, maxPlayer ^ True).get[1, Int]()
                 if new_score > value:
                     value = new_score
                     col_choice = i
+                b_copy.__del__()
+                
+        all_valid_cols.__del__()
         return col_choice, value
-        #   new_score = self.max_alg(bcopy_board, depth + 1, maxPlayer ^ True).get[1, Int]()
-        #   if new_score > value:
-        #       value = new_score
-        #       col_choice = col
-        #return col_choice, value
+
 
     fn get_valid_cols(inout self, b: Board) -> Array[Bool]:
         var valid_col_arry: Array[Bool] = Array[Bool](b.__cols, False)
         for i in range(b.__cols):
-            if b.__piecesInColumns[i] != b.__rows:
+            if b.__piecesInColumns[i] < b.__rows:
                 valid_col_arry[i] = True
         return valid_col_arry
 
     fn win_possible(inout self, b:Board) -> Int:
         for i in range(b.__cols):
-            var copy:Board = b # need keiran to implement board copy functionality
-            var unusedBool = copy.playPiece(self.__id, i)
+            var copy:Board = b 
+            let unusedBool = copy.playPiece(self.__id, i)
             if copy.checkForWinner():
+                copy.__del__()
                 return i
+            copy.__del__()
         return -1
 
     fn block_win_possible(inout self, b:Board) -> Int:
         for i in range(b.__cols):
-            var copy:Board = b # need keiran to implement board copy functionality
-            var unusedBool = copy.playPiece(self.__oppID, i)
+            var copy:Board = b 
+            let unusedBool = copy.playPiece(self.__oppID, i)
             if copy.checkForWinner():
+                copy.__del__()
                 return i
+            copy.__del__()
         return -1
 
     fn current_score(inout self, b: Board) -> Int:
         var score = 0
         # check for block win
-        # horiz'
+        # horiz
         for i in range(b.__rows):
             for j in range(b.__cols - 3):
                 var row_array: Array[Int] = Array[Int](4, -1)
                 for k in range(4):
                     row_array.__setitem__(k, b.__boardState[(i * b.__cols) + (j + k)])
                 score += self.score_array(row_array)
+                row_array.__del__()
 
         # vert
         for j in range(b.__cols):
@@ -104,6 +100,7 @@ struct max_ai:
                 for k in range(4):
                     col_arry.__setitem__(k, b.__boardState[((i + k) * b.__cols) + j])
                 score += self.score_array(col_arry)
+                col_arry.__del__()
 
         # pos diag
         for i in range(b.__rows - 3):
@@ -112,6 +109,7 @@ struct max_ai:
                 for k in range(4):
                     diag_arry.__setitem__(k, b.__boardState[((i + k) * b.__cols) + (j + k)])
                 score += self.score_array(diag_arry)
+                diag_arry.__del__()
 
         # neg diag
         for i in range(b.__rows - 3):
@@ -120,6 +118,7 @@ struct max_ai:
                 for k in range(4):
                     diag_arry.__setitem__(k, b.__boardState[((i + 3 + k) * b.__cols) + (j + k)])
                 score += self.score_array(diag_arry)
+                diag_arry.__del__()
             
         return score
 
@@ -176,41 +175,6 @@ struct max_ai:
             return 5 # 2 in row
         else:
             return 0
-
-
-'''
-def main():
-    var testing: Board = Board(7, 7, 4, 1, 2)
-    var ai2: max_ai =  max_ai(2, 1)
-    var choiceStr: String = '0'
-    var choice: Int = 1
-    while True:
-        choiceStr = Python.evaluate('input("Where to play:> ")').to_string()
-        if choiceStr == '1': 
-            testing.playPiece(1, 0)
-        elif choiceStr == '2':
-            testing.playPiece(1, 1)
-        elif choiceStr == '3':
-            testing.playPiece(1, 2)
-        elif choiceStr == '4':
-            testing.playPiece(1, 3)
-        elif choiceStr == '5':
-            testing.playPiece(1, 4)
-        elif choiceStr == '6':
-            testing.playPiece(1, 5)
-        elif choiceStr == '7':
-            testing.playPiece(1, 6)
-
-        testing.printBoard(testing.__rows, testing.__cols)
-        if testing.checkForWinner() == True:
-            print('YOU WON')
-            return
-        testing.playPiece(2, ai2.makeChoice(testing))
-        testing.printBoard(testing.__rows, testing.__cols)
-        if testing.checkForWinner() == True:
-            print('AI WON')
-            return
-'''
 
 
 
