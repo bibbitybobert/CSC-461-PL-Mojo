@@ -29,17 +29,13 @@ def AI_v_AI(playBoard: Board) -> History:
         let ai1Choice = ai1.choice(selfPlayBoard)
         playHist.addMove(ai1Choice, 0)
         var unusedBool = selfPlayBoard.playPiece(0, ai1Choice)
-        #selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
             # print('AI 1 WINS!!!!')
             return playHist
 
-        #input()
-
         let ai2Choice = ai2.choice(selfPlayBoard)
         playHist.addMove(ai2Choice, 1)
         unusedBool = selfPlayBoard.playPiece(1, ai2Choice)
-        #selfPlayBoard.printBoard(selfPlayBoard.__rows, selfPlayBoard.__cols)
         if selfPlayBoard.checkForWinner():
             # print('AI 2 WINS!!!!')
             return playHist
@@ -60,9 +56,9 @@ struct stdAI:
     def choice(inout self, board: Board) -> Int:
         if self.selfType == 'e':
             return self.selfrand.makeChoice(board)
-        elif self.selfType == 'm':
-            return self.selfMinMax.makeChoice(board)
         elif self.selfType == 'h':
+            return self.selfMinMax.makeChoice(board)
+        elif self.selfType == 'm':
             return self.selfMax.makeChoice(board)
         else:
             print('ERROR')
