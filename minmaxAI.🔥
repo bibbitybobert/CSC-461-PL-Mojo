@@ -47,7 +47,6 @@ struct min_max_ai:
         var temp = b
         valid = temp.playPiece(self.player,i)
         var score = scores.__getitem__(i)
-        print("I: ", i, "Score: ", score)
         if score > bestScore and valid == True:
             bestScore = score
             bestChoice = i
