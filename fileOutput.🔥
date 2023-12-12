@@ -3,22 +3,6 @@ from board import Board
 from history import History
 from python import Python as py
 
-def main():
-    var b = Board(6, 7, 4, 1, 2)
-    var h = History(42)
-    h.addMove(1, 1)
-    b.playPiece(1, 1)
-    displayBoard(b)
-    h.addMove(1, 2)
-    b.playPiece(2, 1)
-    displayBoard(b)
-    h.addMove(1, 1)
-    b.playPiece(1, 1)
-    displayBoard(b)
-
-    outputHistory(h, "one", "two")
-
-
 def outputHistory(inout history: History, player1: String, player2: String) -> None:
     # takes in a list of boards, formats them, and outputs them to a file
     input = py.import_module("builtins").input
