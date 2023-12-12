@@ -75,11 +75,18 @@ struct Menu:
         playerPiece = 0 if player == 1 else 1
         
         locationToPlay = input(playerName + ", please enter the column you would like to play in: ").__str__()
-        locNum = atol(locationToPlay) - 1
+        locNum = -1
+        try:
+            locNum = atol(locationToPlay) - 1
+        except:
+            pass
 
         while self.board.getPieceAtLocation(0, locNum) != -1 or (locNum < 0 or locNum >= self.board.__cols):
             locationToPlay = input("That column is full, please enter a different column: ").__str__()
-            locNum = atol(locationToPlay) - 1
+            try:
+                locNum = atol(locationToPlay) - 1
+            except:
+                locNum = -1
 
         self.history.addMove(locNum, playerPiece)
 
@@ -95,7 +102,7 @@ struct Menu:
 
         var pieceNumToAdd = 1
         var player = 1
-        while self.board.checkForWinner() == False: # Play until a player has won
+        while self.board.checkForWinner() == False or not self.board.boardFull(): # Play until a player has won
             self.playerPlay(player)
 
             player += pieceNumToAdd
@@ -120,7 +127,7 @@ struct Menu:
             if isPlayerTurn:
                 self.playerPlay(1)
             else:
-                var choice = ai.makeChoice(self.board)
+                let choice = ai.makeChoice(self.board)
 
                 self.board.playPiece(1, choice)
 
@@ -146,7 +153,7 @@ struct Menu:
             if isPlayerTurn:
                 self.playerPlay(1)
             else:
-                var choice = ai.makeChoice(self.board)
+                let choice = ai.makeChoice(self.board)
 
                 self.board.playPiece(1, choice)
 
@@ -171,7 +178,7 @@ struct Menu:
             if isPlayerTurn:
                 self.playerPlay(1)
             else:
-                var choice = ai.makeChoice(self.board)
+                let choice = ai.makeChoice(self.board)
 
                 self.board.playPiece(1, choice)
 

@@ -49,7 +49,7 @@ struct min_max_ai:
      for i in range(0, b.__cols):
         var temp = b
         valid = temp.playPiece(self.player,i)
-        var score = scores.__getitem__(i)
+        let score = scores.__getitem__(i)
         if score > bestScore and valid == True:
             bestScore = score
             bestChoice = i
@@ -66,7 +66,7 @@ struct min_max_ai:
 
    #choice is the very first choice made, 
    fn min_max_alg(self, depth: Int, b: Board, player: Int, choice: Int, inout scores: Array[Int]) -> None:
-      var bestChoice = 0
+      let bestChoice = 0
       var temp = b
       let win = temp.checkForWinner()
       let nextPlayer = self.player if player == self.opponent else self.opponent
@@ -93,7 +93,7 @@ struct min_max_ai:
       #otherwise loop through each col, attempting to make a move as a player
       for i in range(0, b.__cols):
          var copy = b
-         var validMove = copy.playPiece(player-1,i)
+         let validMove = copy.playPiece(player-1,i)
          if validMove == True:
             if choice == -1:
                self.min_max_alg(depth+1, copy, nextPlayer, i, scores)
