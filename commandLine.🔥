@@ -1,11 +1,6 @@
 from board import Board
 
-'''def main():
-    b = Board(7, 7, 4)
-    displayBoard(b)
-'''
-
-def formatBoard(inout board: Board) -> String:
+fn formatBoard(inout board: Board) -> String:
     # takes in a board, outputs a string displaying it
     var b: String = "   C • O • N • N • E • C • T\n             four      \n\n  "
     for c in range(board.__cols):
@@ -20,7 +15,7 @@ def formatBoard(inout board: Board) -> String:
         b = b + " | " + "\n" + " +---+---+---+---+---+---+---+\n"
     return b
 
-def normalizePiece(piece: String) -> String:
+fn normalizePiece(piece: String) -> String:
     if piece == '-1':
         return ' '
     if piece == "0":
@@ -29,6 +24,6 @@ def normalizePiece(piece: String) -> String:
         return 'X'
     return piece
 
-def displayBoard(inout board: Board) -> None:
+fn displayBoard(inout board: Board) -> None:
     # takes in a board, formats it, prints the board to the terminal
     print(formatBoard(board))
