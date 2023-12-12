@@ -94,7 +94,7 @@ struct Board:
         let lastRow = self.__lastPlayedRow
         let lastCol = self.__lastPlayedCol
 
-        while row >= 0 and row < self.__rows and col >= 0 and col <= self.__cols \
+        while row >= 0 and row < self.__rows and col >= 0 and col < self.__cols \
             and self.__boardState[row * self.__cols + col] == self.__boardState[lastRow * self.__cols + lastCol]:
                 count = count + 1
                 col -= run
@@ -103,7 +103,7 @@ struct Board:
         row = self.__lastPlayedRow + rise
         col = self.__lastPlayedCol + run
 
-        while row >= 0 and row < self.__rows and col >= 0 and col <= self.__cols \
+        while row >= 0 and row < self.__rows and col >= 0 and col < self.__cols \
             and self.__boardState[row * self.__cols + col] == self.__boardState[lastRow * self.__cols + lastCol]:
                 count = count + 1
                 col += run
