@@ -59,14 +59,14 @@ def AI_v_AI(playBoard: Board) -> History:
         let ai1Choice = ai1.choice(selfPlayBoard)
         playHist.addMove(ai1Choice, 0)
         var validPlay = selfPlayBoard.playPiece(0, ai1Choice)
-        if selfPlayBoard.checkForWinner() or not validPlay:
+        if selfPlayBoard.checkForWinner() or selfPlayBoard.boardFull():
             # print('AI 1 WINS!!!!')
             return playHist
 
         let ai2Choice = ai2.choice(selfPlayBoard)
         playHist.addMove(ai2Choice, 1)
         validPlay = selfPlayBoard.playPiece(1, ai2Choice)
-        if selfPlayBoard.checkForWinner() or not validPlay:
+        if selfPlayBoard.checkForWinner() or selfPlayBoard.boardFull():
             # print('AI 2 WINS!!!!')
             return playHist
         i += 1
