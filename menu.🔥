@@ -88,8 +88,6 @@ struct Menu:
             except:
                 locNum = -1
 
-        print(self.board.checkForWinner())
-
         self.history.addMove(locNum, playerPiece)
 
         self.board.playPiece(playerPiece, locNum)
@@ -131,6 +129,7 @@ struct Menu:
             else:
                 let choice = ai.makeChoice(self.board)
 
+                self.history.addMove(choice, 1)
                 self.board.playPiece(1, choice)
 
             commandLine.displayBoard(self.board)
@@ -158,6 +157,7 @@ struct Menu:
                 let choice = ai.makeChoice(self.board)
 
                 self.board.playPiece(1, choice)
+                self.history.addMove(choice, 1)
 
             commandLine.displayBoard(self.board)
 
@@ -183,6 +183,7 @@ struct Menu:
                 let choice = ai.makeChoice(self.board)
 
                 self.board.playPiece(1, choice)
+                self.history.addMove(choice, 1)
 
             commandLine.displayBoard(self.board)
 
