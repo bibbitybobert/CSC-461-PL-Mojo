@@ -3,13 +3,26 @@ from array import Array
 from python import Python
 
 struct max_ai:
+    """
+    Author: Robert Book
+
+    Description:
+        This struct is for the medium AI that uses a modified max algorithm (similar to minmax but without the min).
+        This means that instead of calculating best and worst moves possible and comparing them, it only looks at the 
+        best moves while ignoring if it sets up a win for its opponent.
+
+    Usage: 
+        To use this AI, you can call it like any other struct and just have to specify it's ID and the ID of its oponent
+        (should be 1 and 2 for either of those). The makeChoice() function will return an integer that is the column that
+        it thinks is the best move.
+    """
     var __id: Int
     var __max_depth: Int
     var __oppID: Int
 
     fn __init__(inout self, id: Int, oppID: Int):
-        self.__id = id
-        self.__oppID = oppID
+        self.__id = id - 1
+        self.__oppID = oppID - 1
         self.__max_depth = 3
 
     def makeChoice(inout self, b: Board) -> Int:
@@ -25,7 +38,7 @@ struct max_ai:
         let block_win_col: Int = self.block_win_possible(b)
         var col_choice = 4
 
-        if depth == self.__max_depth or win_col != - 1 or block_win_col != -1:
+        if depth == self.__max_depth or win_col != -1 or block_win_col != -1:
         #   return score of current spot
             if win_col != -1:
                 return win_col, 10000

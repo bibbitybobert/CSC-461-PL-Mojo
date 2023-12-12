@@ -1,13 +1,14 @@
 from python import Python
 
 def main():
+    input = Python.import_module("builtins").input
     var selection: String = ""
     
     while(selection != "0"):
         printMenu()
 
         # input example
-        selection = Python.evaluate("input('Selection: ')").to_string()
+        selection = input("Selection: ").__str__()
         print()
 
         # branching example
@@ -34,11 +35,13 @@ def helloWorld() -> None:
     print("Hello World!")
 
 def sayHello() -> None:
-    let name: String = Python.evaluate("input('Enter your name: ')").to_string()
+    input = Python.import_module("builtins").input
+    let name: String = input("Enter your name: ").__str__()
     print("\nHello " + name)
 
 def printSpacedName() -> None:
-    let name: String = Python.evaluate("input('Enter your name: ')").to_string()
+    input = Python.import_module("builtins").input
+    let name: String = input("Enter your name: ").__str__()
     print()
 
     # iteration example

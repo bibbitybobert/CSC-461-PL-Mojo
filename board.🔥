@@ -2,6 +2,20 @@ from array import Array
 from memory.unsafe import Pointer
 from python import Python
 
+"""
+Author: Keiran Berry
+
+Description: This is the struct for a connect four board. It contains 
+functionality to check for wins, see if the board is full, and play
+pieces. It also has a copy constructor and is composed of all 
+destructible types, so it does not need a del function. 
+
+To create a new board, pass in its number of rows, columns, the number 
+in a row required to win, and the id numbers of the players. 
+
+Example: var newBoard: Board = Board(6, 7, 4, 0, 1)
+"""
+
 struct Board:
     var __rows: Int
     var __cols: Int
@@ -51,7 +65,7 @@ struct Board:
 
 
     fn playPiece(inout self, piece: Int, column: Int) -> Bool:
-        if column < 0 or column >= self.__cols:
+        if column < 0 or column >= self.__cols or self.__piecesInColumns[column] >= self.__rows:
             # Column is not in the range of playable columns
             return False
         else:
@@ -116,6 +130,13 @@ struct Board:
             return True
         return False
     
+    fn boardFull(inout self) -> Bool:
+        for i in range(self.__cols):
+            if self.__piecesInColumns[i] < self.__rows:
+                return False
+        
+        return True
+
     # this function is used for quick debugging, not final output
     fn printBoard(inout self, r: Int, c: Int) -> None:
         print("number to win: " + String(self.__numberToWin))
