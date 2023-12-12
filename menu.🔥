@@ -103,7 +103,9 @@ struct Menu:
 
             commandLine.displayBoard(self.board)
 
-        if player == 2:
+        if not self.board.checkForWinner() and self.board.boardFull():
+            print(self.player1 + " and " + self.player2 + "tied!")
+        elif player == 2:
             print(self.player1 + " has won!")
         else:   
             print(self.player2 + " has won!")
@@ -126,7 +128,10 @@ struct Menu:
 
             isPlayerTurn = not isPlayerTurn
 
-        if not isPlayerTurn:
+        if not self.board.checkForWinner() and self.board.boardFull():
+            print(self.player1 + " and " + self.player2 + "tied!")
+
+        elif not isPlayerTurn:
             print(self.player1 + " has won!")
         else:   
             print("The AI has won!")
@@ -149,7 +154,9 @@ struct Menu:
 
             isPlayerTurn = not isPlayerTurn
 
-        if not isPlayerTurn:
+        if not self.board.checkForWinner() and self.board.boardFull():
+            print(self.player1 + " and " + self.player2 + "tied!")
+        elif not isPlayerTurn:
             print(self.player1 + " has won!")
         else:   
             print("The AI has won!")
@@ -172,7 +179,10 @@ struct Menu:
 
             isPlayerTurn = not isPlayerTurn
 
-        if not isPlayerTurn:
+
+        if not self.board.checkForWinner() and self.board.boardFull():
+            print(self.player1 + " and " + self.player2 + "tied!")
+        elif not isPlayerTurn:
             print(self.player1 + " has won!")
         else:   
             print("The AI has won!")
@@ -186,82 +196,19 @@ struct Menu:
 
         let lastPiece = self.history.piecesPlayed[lastMove]
         
-        var tmpBoard = Board(6, 7, 4, 1, 2)
+        self.board = Board(6, 7, 4, 1, 2)
         for play in range(self.history.getLenOfMoves()):
             let move = self.history.moves[play]
             let piece = self.history.piecesPlayed[play]
-            tmpBoard.playPiece(piece, move)
-            commandLine.displayBoard(tmpBoard)
+            self.board.playPiece(piece, move)
+            commandLine.displayBoard(self.board)
 
-        if lastPiece == 0:
+        if not self.board.checkForWinner() and self.board.boardFull():
+            print(self.player1 + " and " + self.player2 + "tied!")
+
+        elif lastPiece == 0:
             print("AI 1 has won!")
 
         else:
             print("AI 2 has won!")
-
-
-
-        """from minmaxAI import min_max_ai
-        from avgAI import max_ai
-        from basicAI import basic_ai
-        input = py.import_module("builtins").input
-
-        easyPlayer1 = basic_ai(1)
-        mediumPlayer1 = max_ai(1,0)
-        hardPlayer1 = min_max_ai(1,0)
-
-        easyPlayer2 = basic_ai(0)
-        mediumPlayer2 = max_ai(0,1)
-        hardPlayer2 = min_max_ai(0,1)
-
-        print("What difficulty would you like the first AI to be?")
-        ai1 = chooseAI()
-
-        print("What difficulty would you like the second AI to be?")
-        ai2 = chooseAI()
-
-        var isPlayer1Turn = True
-
-        while self.board.checkForWinner() == False: # Play until a player has won
-            if isPlayer1Turn:
-                choice = -1
-                if ai1 == 1:
-                    choice = easyPlayer1.makeChoice(self.board)
-                elif ai1 == 2:
-                    choice = mediumPlayer1.makeChoice(self.board)
-                elif ai1 == 3:
-                    choice = hardPlayer1.makeChoice(self.board)
-
-                print(choice)
-
-                self.board.playPiece(0, choice)
-            else:
-                choice = -1
-                
-                if ai2 == 1:
-                    choice = easyPlayer2.makeChoice(self.board)
-                elif ai2 == 2:
-                    choice = mediumPlayer2.makeChoice(self.board)
-                elif ai2 == 3:
-                    choice = hardPlayer2.makeChoice(self.board)
-
-                print(choice)
-
-                self.board.playPiece(1, choice)
-
-            commandLine.displayBoard(self.board)
-
-            isPlayer1Turn = not isPlayer1Turn
-
-            input() # So so users can click through the game
-            
-
-        if not isPlayer1Turn:
-            print("AI 1 has won!")
-        else:   
-            print("AI 2 has won!")"""
-
-
-
-
 

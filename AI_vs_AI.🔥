@@ -16,7 +16,7 @@ def chooseAI() -> Int:
         elif answer == 'm' or answer == 'M':
             ai = 2
         elif answer == 'h' or answer == 'H':
-            ai == 3
+            ai = 3
         else:
             print('Please enter e, m, or h')
 
