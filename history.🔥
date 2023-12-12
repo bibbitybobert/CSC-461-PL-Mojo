@@ -32,7 +32,7 @@ struct History:
     def getLenOfMoves(inout self) -> Int:
         return self.index
 
-    '''def showMoves(inout self, player1: String, player2: String):
+    def showMoves(inout self, player1: String, player2: String):
         print("Moves played:")
 
         for play in range(self.getLenOfMoves()):
