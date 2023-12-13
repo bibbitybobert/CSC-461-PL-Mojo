@@ -5,8 +5,10 @@ from random import random_si64
 """
 Author: Erin Green
 
-Description: This is the struct for the basic AI, which has a very simplicstic
-desicion-making algorithm, which is essentially random decisions.
+Description: This is the struct for the minmax AI, which uses the minmax algorithm to produce
+an Ai that is challengine to bead. However, it is not impossible due to the randomized choice made
+when scores are evaluated to be of the same value and the limited depth of the algorithm (so not every
+possibility is seen by the AI at a time).
 
 To use this AI, simply call the choice function and pass in the board. The AI will return
 an integer representing the column in which it wants to play.
